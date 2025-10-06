@@ -1,0 +1,2 @@
+langchain_google_genai==2.1.12
+streamlit==1.50.0
