@@ -1,9 +1,7 @@
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
 API_KEY = st.secrets["GOOGLE_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = API_KEY
 
