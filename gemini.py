@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_KEY = os.environ.get("GOOGLE_API_KEY")
+API_KEY = st.secrets["GOOGLE_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = API_KEY
 
 def generate_text(prompt: str, model: str = "gemini-2.5-flash") -> str:
