@@ -46,8 +46,10 @@ os.environ["GOOGLE_API_KEY"] = API_KEY
 client = MultiServerMCPClient(
     {
         "firebase": {
-            "url": "http://127.0.0.1:8000/mcp",
-            "transport": "streamable_http",
+            # "url": "http://bigcon-production.up.railway.app/mcp",
+            # "transport": "streamable_http",
+            "url": "http://bigcon-production.up.railway.app/sse",
+            "transport": "sse",
         },
         # 필요하면 다른 MCP 서버 추가
     }

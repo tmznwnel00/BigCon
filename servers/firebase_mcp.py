@@ -93,21 +93,10 @@ mcp = FastMCP(
     # port=9000
 )
 
-# @mcp.tool()
-# async def list_tables() -> list[str]:
-#     """
-#     Returns a list of top-level keys (tables) in the Firebase Realtime Database.
-#     """
-#     print("list_tables called")
-#     try:
-#         ref = db.reference('/')
-#         data = ref.get()
-#         if not isinstance(data, dict):
-#             return []
-#         return list(data.keys())
-#     except Exception as e:
-#         print(f"Error in list_tables: {e}")
-#         return []
+
+@mcp.app.get("/")
+async def root():
+    return {"status": "Firebase MCP server is running 🚀"}
 
 @mcp.tool()
 async def search_franchise_by_name(mct_nm: str) -> list[dict[str, Any]]:
@@ -181,6 +170,7 @@ async def get_franchise_sales_info(encoded_mct: str) -> dict[str, Any]:
 if __name__ == "__main__":
     print("Starting Firebase MCP server...")
     mcp.run(
-        transport="streamable-http"
+        # transport="streamable-http"
+        transport="sse"
     )
     
