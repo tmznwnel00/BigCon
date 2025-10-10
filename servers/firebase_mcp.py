@@ -1,30 +1,35 @@
+import os
 import json
+from dotenv import load_dotenv
 from typing import Any
+from collections import OrderedDict
+
 import firebase_admin
 from firebase_admin import credentials, db
 from mcp.server.fastmcp import FastMCP
-import os
+
+load_dotenv()
 
 # Initialize Firebase Admin SDK only once
 if not firebase_admin._apps:
 
-    cred_json = {}
-    cred_json["type"] = "service_account",
-    cred_json["project_id"] = "bigcon-2025",
+    cred_json = OrderedDict()
+    cred_json["type"] = "service_account"
+    cred_json["project_id"] = "bigcon-2025"
     cred_json["private_key_id"] = os.getenv("private_key_id")
-    cred_json["private_key"] = os.getenv("private_key")
+    cred_json["private_key"] = os.getenv("private_key").replace('\\n', '\n')
     cred_json["client_email"] = os.getenv("client_email")
     cred_json["client_id"] = os.getenv("client_id")
-    cred_json["auth_uri"] = "https://accounts.google.com/o/oauth2/auth",
-    cred_json["token_uri"] = "https://oauth2.googleapis.com/token",
-    cred_json["auth_provider_x509_cert_url"] = "https://www.googleapis.com/oauth2/v1/certs",
-    cred_json["client_x509_cert_url"] = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40bigcon-2025.iam.gserviceaccount.com",
+    cred_json["auth_uri"] = "https://accounts.google.com/o/oauth2/auth"
+    cred_json["token_uri"] = "https://oauth2.googleapis.com/token"
+    cred_json["auth_provider_x509_cert_url"] = "https://www.googleapis.com/oauth2/v1/certs"
+    cred_json["client_x509_cert_url"] = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40bigcon-2025.iam.gserviceaccount.com"
     cred_json["universe_domain"] = "googleapis.com"
     
 
-    JSON = json.dumps(cred_json)
-    JSON = json.loads(JSON)
-    cred = credentials.Certificate(JSON)
+    dump_json = json.dumps(cred_json)
+    load_json = json.loads(dump_json)
+    cred = credentials.Certificate(load_json)
     # cred = credentials.Certificate('bigcon-2025-firebase-adminsdk-fbsvc-4409b3177b.json')
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://bigcon-2025-default-rtdb.asia-southeast1.firebasedatabase.app'
@@ -175,5 +180,6 @@ if __name__ == "__main__":
     print("Starting Firebase MCP server...")
     mcp.run(
         transport="streamable-http"
+        # transport="sse"
     )
     

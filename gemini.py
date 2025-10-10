@@ -46,8 +46,8 @@ os.environ["GOOGLE_API_KEY"] = API_KEY
 client = MultiServerMCPClient(
     {
         "firebase": {
-            "url": "http://127.0.0.1:8000/sse",
-            "transport": "sse",
+            "url": "http://127.0.0.1:8000/mcp",
+            "transport": "streamable_http",
         },
         # 필요하면 다른 MCP 서버 추가
     }
@@ -55,7 +55,6 @@ client = MultiServerMCPClient(
 
 # tools 가져오기
 tools = asyncio.run(client.get_tools())  # list of all tools
-
 
 
 # 에이전트 생성
