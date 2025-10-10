@@ -1,5 +1,7 @@
 import os
+import subprocess
 import streamlit as st
+import time
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import initialize_agent, AgentType
 from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -7,6 +9,38 @@ import asyncio
 
 API_KEY = st.secrets["GOOGLE_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = API_KEY
+
+
+@st.cache_resource
+def start_mcp_server():
+    import requests
+
+    # MCP 서버가 이미 실행 중인지 확인
+    try:
+        requests.get("http://127.0.0.1:8000/sse", timeout=2)
+        print("✅ Firebase MCP server already running.")
+        return None
+    except Exception:
+        print("🚀 Starting Firebase MCP server...")
+        process = subprocess.Popen(
+            ["uv", "run", "servers/firebase_mcp.py"],  
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        # 서버 준비될 때까지 헬스체크
+        for _ in range(10):
+            try:
+                time.sleep(1)
+                requests.get("http://127.0.0.1:8000/sse", timeout=2)
+                print("✅ Firebase MCP server is ready.")
+                return process
+            except Exception:
+                continue
+        print("⚠️ MCP server not responding after 10 seconds.")
+        return process
+
+mcp_process = start_mcp_server()
 
 # MultiServerMCPClient 생성
 client = MultiServerMCPClient(
