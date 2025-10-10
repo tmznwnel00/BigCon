@@ -156,6 +156,6 @@ async def get_franchise_sales_info(encoded_mct: str) -> dict[str, Any]:
 if __name__ == "__main__":
     print("Starting Firebase MCP server...")
     mcp.run(
-        transport="http"
+        transport="sse"
     )
     
