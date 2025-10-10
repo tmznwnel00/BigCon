@@ -48,7 +48,8 @@ client = MultiServerMCPClient(
         "firebase": {
             # "url": "http://bigcon-production.up.railway.app/mcp",
             # "transport": "streamable_http",
-            "url": "http://bigcon-production.up.railway.app/sse",
+            # "url": "http://bigcon-production.up.railway.app/sse",
+            "url": "https://bigcon.onrender.com/sse",
             "transport": "sse",
         },
         # 필요하면 다른 MCP 서버 추가
