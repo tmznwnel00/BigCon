@@ -93,11 +93,6 @@ mcp = FastMCP(
     # port=9000
 )
 
-
-@mcp.app.get("/")
-async def root():
-    return {"status": "Firebase MCP server is running 🚀"}
-
 @mcp.tool()
 async def search_franchise_by_name(mct_nm: str) -> list[dict[str, Any]]:
     """
