@@ -7,7 +7,25 @@ import os
 
 # Initialize Firebase Admin SDK only once
 if not firebase_admin._apps:
-    cred = credentials.Certificate('bigcon-2025-firebase-adminsdk-fbsvc-4409b3177b.json')
+
+    cred_json = {}
+    cred_json["type"] = "service_account",
+    cred_json["project_id"] = "bigcon-2025",
+    cred_json["private_key_id"] = os.getenv("private_key_id")
+    cred_json["private_key"] = os.getenv("private_key")
+    cred_json["client_email"] = os.getenv("client_email")
+    cred_json["client_id"] = os.getenv("client_id")
+    cred_json["auth_uri"] = "https://accounts.google.com/o/oauth2/auth",
+    cred_json["token_uri"] = "https://oauth2.googleapis.com/token",
+    cred_json["auth_provider_x509_cert_url"] = "https://www.googleapis.com/oauth2/v1/certs",
+    cred_json["client_x509_cert_url"] = "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40bigcon-2025.iam.gserviceaccount.com",
+    cred_json["universe_domain"] = "googleapis.com"
+    
+
+    JSON = json.dumps(cred_json)
+    JSON = json.loads(JSON)
+    cred = credentials.Certificate(JSON)
+    # cred = credentials.Certificate('bigcon-2025-firebase-adminsdk-fbsvc-4409b3177b.json')
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://bigcon-2025-default-rtdb.asia-southeast1.firebasedatabase.app'
     })
