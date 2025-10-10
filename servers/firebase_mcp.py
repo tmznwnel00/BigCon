@@ -89,6 +89,8 @@ ref3_map = {
 mcp = FastMCP(
     name="Firebase",
     instructions="A Retriever that can retrieve information from the Firebase Realtime Database.",
+    host="0.0.0.0",
+    # port=9000
 )
 
 # @mcp.tool()
@@ -179,7 +181,8 @@ async def get_franchise_sales_info(encoded_mct: str) -> dict[str, Any]:
 if __name__ == "__main__":
     print("Starting Firebase MCP server...")
     mcp.run(
-        transport="streamable-http"
-        # transport="sse"
+        transport="streamable-http",
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 8000))
     )
     
